@@ -21,17 +21,16 @@ class GameSprite(sprite.Sprite):
 class Player(GameSprite):
     def update_l(self):
         keys = key.get_pressed()
-        if keys[K_w] and self.rect.y > 5:
+        if keys[K_w] and self.rect.y > 3:
             self.rect.y -= self.speed
-        if keys[K_s] and self.rect.y < win_width - 80:
+        if keys[K_s] and self.rect.y < win_width - 350:
             self.rect.y += self.speed
-
 
     def update_r(self):
         keys = key.get_pressed()
-        if keys[K_UP] and self.rect.y > 5:
+        if keys[K_UP] and self.rect.y > 3:
             self.rect.y -= self.speed
-        if keys[K_DOWN] and self.rect.y < win_width - 40:
+        if keys[K_DOWN] and self.rect.y < win_width - 350:
             self.rect.y += self.speed
 
 racket1 = Player('racket.png', 30, 200, 50, 150, 4)
@@ -43,8 +42,8 @@ dy = 3
 
 font.init()
 font1 = font.Font(None, 70)
-lose1 = font1.render('U ARE LOSER!!!', True, (255, 0, 0))
-lose2 = font1.render('U ARE LOSER TOO!!!', True, (255, 0, 0))
+lose1 = font1.render('game over', True, (255, 0, 0))
+lose2 = font1.render('game over', True, (255, 0, 0))
 
 game = True
 finish = False
@@ -53,12 +52,12 @@ while game:
         if e.type == QUIT:
             game = False
 
-
     if finish == False:
         racket1.update_l()
         racket2.update_r()
         ball.rect.x += dx
         ball.rect.y += dy
+
         if ball.rect.y < 0 or ball.rect.y >= win_height - 50:
             dy *= -1
         if sprite.collide_rect(racket1, ball) or sprite.collide_rect(racket2, ball):
@@ -68,6 +67,7 @@ while game:
         racket1.reset()
         racket2.reset()
         ball.reset()
+
         if ball.rect.x <= 0:
             finish = True
             window.blit(lose1, (200, 200))
@@ -75,7 +75,6 @@ while game:
         if ball.rect.x >= win_width - 50:
             finish = True
             window.blit(lose2, (200, 200))
-
 
     display.update()
     clock.tick(FPS)
